@@ -1,0 +1,48 @@
+/*idea : Change the background as the forecast changes*/
+
+*, ::after,::before{
+    box-sizing: border-box;
+}
+:root{
+--spacing-regular: 16px;
+--spacing-medium: 8px;
+
+}
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 400px;
+    margin: auto;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-areas: 
+    "current current"
+    "hourly hourly"
+    "fiveday fiveday"
+    "feelslike humidity";
+}
+
+.container,.container>article{
+    border: 1px solid;
+    border-radius: var(--spacing-regular);
+    padding: var(--spacing-regular);
+    gap: var(--spacing-regular);
+}
+#current-forecast{
+    grid-area: current;
+}
+#Hourly-forecast{
+   grid-area: hourly;
+}
+#five-day-forecast{
+    grid-area: fiveday;
+}
+#feels-like{
+    grid-area: feelslike;
+}
+#Humidity{
+    grid-area: humidity;
+}
