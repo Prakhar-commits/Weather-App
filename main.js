@@ -18,6 +18,9 @@ return data.list.map(forecast => {
 }
 
 const formattedtemperature = (temp) => `${temp?.toFixed(1)}°`;
+const iconUrl = (icon) => `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
+
 const loadCurrentforecast = ({name , main:{temp , temp_max , temp_min }, weather:[{description}]}) =>{
     const currentforecastelement = document.querySelector("#current-forecast");
     currentforecastelement.querySelector(".city").textContent = name;
@@ -29,6 +32,18 @@ const loadCurrentforecast = ({name , main:{temp , temp_max , temp_min }, weather
 
 const loadHourlyforecast = (hourlyforecast) =>{
     console.log(hourlyforecast);
+    let dataFor12hours = hourlyforecast.slice(1,13);
+    const hourlyContainer = document.querySelector(".hourly-container");
+    let innerHTMLString = ``;
+    
+    for(let { temp , icon , dt_txt} of dataFor12hours){
+         innerHTMLString += `<article>
+         <h2 class="time">${dt_txt.split(" ")[1]}</h2>
+         <img class="icon" src="${iconUrl(icon)}"/>
+         <p class="hourly-temp">${formattedtemperature(temp)}</p>
+     </article>`
+    }
+    hourlyContainer.innerHTML = innerHTMLString; 
 }
 
 
@@ -36,4 +51,5 @@ document.addEventListener("DOMContentLoaded",  async()=>{
  const currentweather = await getcurrentweather();
  loadCurrentforecast(currentweather);
  const hourlyforecast = await getHourlyforecast(currentweather)
+ loadHourlyforecast(hourlyforecast);
 })

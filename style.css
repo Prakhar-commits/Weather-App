@@ -58,8 +58,17 @@ body{
     font-size: var(--font-regular);
     font-weight: var(--font-semibold);
 }
+
+#Hourly-forecast .hourly-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill , minmax(100px , 1fr));
+    grid-auto-flow: column;
+    grid-template-columns: minmax(100px , 1fr);
+    overflow-x: auto;
+}
 #Hourly-forecast{
    grid-area: hourly;
+   text-align: center;
 }
 #five-day-forecast{
     grid-area: fiveday;
