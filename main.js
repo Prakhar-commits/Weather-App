@@ -46,10 +46,20 @@ const loadHourlyforecast = (hourlyforecast) =>{
     hourlyContainer.innerHTML = innerHTMLString; 
 }
 
+const loadFeelsLike = ({main: { feels_like }}) =>{
+   const feelslikeelement =  document.querySelector("#feels-like");
+   feelslikeelement.querySelector(".feels-liketemp").textContent = formattedtemperature(feels_like);
+}
 
+const loadHumidity = ({main: {humidity}})=>{
+    const humidityelement = document.querySelector("#Humidity");
+    humidityelement.querySelector(".Humidityvalue").textContent = `${humidity} %`;
+}
 document.addEventListener("DOMContentLoaded",  async()=>{
  const currentweather = await getcurrentweather();
  loadCurrentforecast(currentweather);
  const hourlyforecast = await getHourlyforecast(currentweather)
  loadHourlyforecast(hourlyforecast);
+ loadFeelsLike(currentweather);
+ loadHumidity(currentweather);
 })

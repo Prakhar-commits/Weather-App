@@ -66,6 +66,21 @@ body{
     grid-template-columns: minmax(100px , 1fr);
     overflow-x: auto;
 }
+
+#Hourly-forecast  .hourly-container .time{
+
+}
+#Hourly-forecast  .hourly-container .icon{
+height: 100px;
+width: 100px;
+object-fit: contain;
+}
+
+#Hourly-forecast .hourly-container .hourly-temp{
+  font-size: var(--font-regular);
+  font-weight: var(--font-semibold);
+}
+
 #Hourly-forecast{
    grid-area: hourly;
    text-align: center;
@@ -75,7 +90,9 @@ body{
 }
 #feels-like{
     grid-area: feelslike;
+    text-align: center;
 }
 #Humidity{
     grid-area: humidity;
+    text-align: center;
 }
