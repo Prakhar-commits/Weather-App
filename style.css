@@ -29,6 +29,7 @@ body{
     display: grid;
     grid-template-columns: repeat(2,1fr);
     grid-template-areas: 
+    "search search"
     "current current"
     "hourly hourly"
     "fiveday fiveday"
