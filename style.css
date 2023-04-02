@@ -42,6 +42,14 @@ body{
     padding: var(--spacing-regular);
     gap: var(--spacing-regular);
 }
+
+#search{
+    grid-area: search;
+    font-size: var(--font-large);
+    border-radius:var(--font-regular);
+    padding: var(--spacing-medium);
+
+}
 #current-forecast{
     grid-area: current;
     text-align: center;

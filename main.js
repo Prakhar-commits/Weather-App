@@ -2,6 +2,11 @@ const APIKEY = "31a6db7ce0091bfd0c77b3e1e3fa15a3";
 
 const DAYS_OF_THE_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+const getCities=async(searchText)=>{
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchText}&appid=${APIKEY}`)
+    
+}
+
 const getcurrentweather = async () => {
   const city = "DELHI";
   const response = await fetch(
