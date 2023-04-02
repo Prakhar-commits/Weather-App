@@ -3,8 +3,8 @@ const APIKEY = "31a6db7ce0091bfd0c77b3e1e3fa15a3";
 const DAYS_OF_THE_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const getCities=async(searchText)=>{
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchText}&appid=${APIKEY}`)
-    
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&appid=${APIKEY}`)
+    return response.json();
 }
 
 const getcurrentweather = async () => {
@@ -137,7 +137,28 @@ const loadHumidity = ({ main: { humidity } }) => {
   const humidityelement = document.querySelector("#Humidity");
   humidityelement.querySelector(".Humidityvalue").textContent = `${humidity} %`;
 };
+
+function debounce(func){
+    let timer;
+    return (...args)=>{
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        },timeout, 3000);
+    }
+}
+
+const onSearchChange =(event)=>{
+let {value} = event.target;
+getCities(value); 
+}
+
+const debounceSearch = debounce((event)=>onSearchChange(event))
 document.addEventListener("DOMContentLoaded", async () => {
+
+   const searchInput = document.querySelector("#search");
+   searchInput.addEventListener("input",debounceSearch)
+   
   const currentweather = await getcurrentweather();
   loadCurrentforecast(currentweather);
   const hourlyforecast = await getHourlyforecast(currentweather);
