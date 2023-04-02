@@ -96,15 +96,25 @@ const loadFiveDayForecast = (hourlyforecast) => {
   container.innerHTML = dayWiseInfo;
 };
 
-const loadHourlyforecast = (hourlyforecast) => {
+const loadHourlyforecast = (
+  { main: { temp: tempNow }, weather: [{ icon: iconNow }] },
+  hourlyforecast
+) => {
   console.log(hourlyforecast);
-  let dataFor12hours = hourlyforecast.slice(1, 13);
+  const formattedTime = Intl.DateTimeFormat("en",{
+    hour12:true, hour:"numeric"
+  })
+  let dataFor12hours = hourlyforecast.slice(2, 14);
   const hourlyContainer = document.querySelector(".hourly-container");
-  let innerHTMLString = ``;
+  let innerHTMLString = `<article>
+  <h2 class="time">Now</h2>
+  <img class="icon" src="${iconUrl(iconNow)}"/>
+  <p class="hourly-temp">${formattedtemperature(tempNow)}</p>
+</article>`;
 
   for (let { temp, icon, dt_txt } of dataFor12hours) {
     innerHTMLString += `<article>
-         <h2 class="time">${dt_txt.split(" ")[1]}</h2>
+         <h2 class="time">${formattedTime.format(new Date(dt_txt))}</h2>
          <img class="icon" src="${iconUrl(icon)}"/>
          <p class="hourly-temp">${formattedtemperature(temp)}</p>
      </article>`;
@@ -126,7 +136,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const currentweather = await getcurrentweather();
   loadCurrentforecast(currentweather);
   const hourlyforecast = await getHourlyforecast(currentweather);
-  loadHourlyforecast(hourlyforecast);
+  loadHourlyforecast(currentweather, hourlyforecast);
   loadFiveDayForecast(hourlyforecast);
   loadFeelsLike(currentweather);
   loadHumidity(currentweather);

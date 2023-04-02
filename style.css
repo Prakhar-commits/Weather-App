@@ -115,6 +115,14 @@ font-weight: var(--font-semibold);
     width: 75px;
     height: 75px;
 }
+.five-day-forecast-container .day-wise-forecast .day{
+  text-transform: capitalize;
+  justify-self: start;
+}
+
+.five-day-forecast-container .day-wise-forecast .max-temp{
+    justify-self: end;
+}
 
 #feels-like{
     grid-area: feelslike;
