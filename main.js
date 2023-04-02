@@ -47,13 +47,25 @@ dayWiseForecast.set(dayofTheWeek,[forecast]);
         }
     }
     for(let[key,value] of dayWiseForecast){
-        let mintemperatures = Math.min()
+        let temp_min = Math.min(...Array.from(value, val=> val.temp_min))
+        let temp_max = Math.max(...Array.from(value,val=> val.temp_max))
+        dayWiseForecast.set(key,{temp_min,temp_max,icon: value.find(v=> v.icon).icon})
     }
 }
 
 const loadFiveDayForecast=()=>{
 console.log(hourlyforecast)
 const dayWiseForecast = calculateDayWiseForecast(hourlyforecast)
+const container = document.querySelector(".five-day-forecast-container");
+let dayWiseInfo = "";
+Array.from(dayWiseForecast).map(([day,{temp_min,temp_max,icon}],index )=>{
+    dayWiseInfo += `<article class="day-wise-forecast">
+    <h3>${index ===0?"Today": day}</h3>
+   <img class="icon" src="${createIconUrl(icon)}" alt="forecast-icon">
+    <p class="min-temp">${temp_min}</p>
+    <p class="max-temp">${temp_max}</p>
+</article>`
+})
 }
 
 
