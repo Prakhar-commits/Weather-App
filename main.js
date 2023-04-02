@@ -144,13 +144,18 @@ function debounce(func){
         clearTimeout(timer);
         timer = setTimeout(() => {
             func.apply(this, args)
-        },timeout, 3000);
+        }, 500);
     }
 }
 
-const onSearchChange =(event)=>{
+const onSearchChange = async(event)=>{
 let {value} = event.target;
-getCities(value); 
+const listOfCities = await getCities(value);
+let options = "";
+for(let {lat , lon ,name ,state , country } of listOfCities){
+    options+=` <option value="${name},${state},${country}"></option>`
+}
+document.querySelector("#cities").innerHTML = options;
 }
 
 const debounceSearch = debounce((event)=>onSearchChange(event))
