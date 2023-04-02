@@ -87,6 +87,7 @@ object-fit: contain;
 }
 #five-day-forecast{
     grid-area: fiveday;
+    text-align: center;
 }
 #feels-like{
     grid-area: feelslike;

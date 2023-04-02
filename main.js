@@ -8,10 +8,11 @@ const getcurrentweather = async()=>{
 
 const getHourlyforecast = async() =>{
 const city = "DELHI"
-const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}`)
+const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`)
 const data = await response.json();
 return data.list.map(forecast => {
-    const { main: {temp , temp_max , temp_min } , dt , dt_txt , weather: {description , icon }} = forecast;
+    const { main: {temp , temp_max , temp_min } , dt , dt_txt , weather:[ {description,icon}]} = forecast;
+   
     return{ temp , temp_max , temp_min, dt , dt_txt , description , icon}
 })
 
