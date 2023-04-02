@@ -1,5 +1,7 @@
 const APIKEY = "31a6db7ce0091bfd0c77b3e1e3fa15a3";
 
+const DAYS_OF_THE_WEEK = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
 const getcurrentweather = async()=>{
     const city = "DELHI"
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`)
@@ -29,6 +31,30 @@ const loadCurrentforecast = ({name , main:{temp , temp_max , temp_min }, weather
     currentforecastelement.querySelector(".description").textContent = description;
     currentforecastelement.querySelector(".highlowtemp").textContent = `H : ${formattedtemperature(temp_max)} , L : ${formattedtemperature(temp_min)}`
 } 
+
+const calculateDayWiseForecast = (hourlyforecast)=>{
+    let dayWiseForecast = new Map();
+    for(let forecast of hourlyforecast){
+        const [date]= forecast.dt_txt.split(" ");
+        const dayofTheWeek = DAYS_OF_THE_WEEK(new date(date).getDay())
+
+        if(dayWiseForecast.has(dayofTheWeek)){
+            let forecastFortheDay = dayWiseForecast.get(dayofTheWeek);
+            forecastFortheDay.push(forecast);
+            dayWiseForecast.set(dayofTheWeek, forecastFortheDay);
+        }else{
+dayWiseForecast.set(dayofTheWeek,[forecast]);
+        }
+    }
+    for(let[key,value] of dayWiseForecast){
+        let mintemperatures = Math.min()
+    }
+}
+
+const loadFiveDayForecast=()=>{
+console.log(hourlyforecast)
+const dayWiseForecast = calculateDayWiseForecast(hourlyforecast)
+}
 
 
 const loadHourlyforecast = (hourlyforecast) =>{
@@ -61,6 +87,7 @@ document.addEventListener("DOMContentLoaded",  async()=>{
  loadCurrentforecast(currentweather);
  const hourlyforecast = await getHourlyforecast(currentweather)
  loadHourlyforecast(hourlyforecast);
+ loadFiveDayForecast(hourlyforecast);
  loadFeelsLike(currentweather);
  loadHumidity(currentweather);
 })
