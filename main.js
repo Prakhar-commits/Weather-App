@@ -14,16 +14,14 @@ const getCities = async (searchText) => {
   return response.json();
 };
 
-const getcurrentweather = async () => {
-  const city = "DELHI";
-  const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`
-  );
+const getcurrentweather = async ({lat , lon , name: city}) => {
+  const url = lat && lon?`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=meteric`: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`
+  const response = await fetch(url);
   return response.json();
 };
 
-const getHourlyforecast = async () => {
-  const city = "DELHI";
+const getHourlyforecast = async ({name: city}) => {
+  
   const response = await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`
   );
@@ -160,23 +158,31 @@ const handleCitySelection=(event)=>{
 selectedCityText= event.target.value;
 let options = document.querySelectorAll("#cities > option");
 if(options?.length){
-  let selectedOption = Array.from(options)
+  let selectedOption = Array.from(options).find(opt=>opt.value=== selectedCityText);
+  selectedCity = JSON.parse(selectedOption.getAttribute("data-city-details"));
+
 }
 }
 
 const onSearchChange = async (event) => {
   let { value } = event.target;
-   console.log(value)
-  const listOfCities = await getCities(value);
-  console.log(listOfCities);
-  let options = "";
-  for (let { lat, lon, name, state, country } of listOfCities) {
-    options += ` <option data-city-details='${JSON.stringify({
-      lat,
-      lon,
-      name,
-    })}' value="${name},${state},${country}"></option>`;
+  if(!value){
+    let selectedCity = null;
+    selectedCityText = "";
   }
+  if(value && (selectedCityText !== value)){ 
+   const listOfCities = await getCities(value);
+    console.log(listOfCities);
+    let options = "";
+    for (let { lat, lon, name, state, country } of listOfCities) {
+      options += ` <option data-city-details='${JSON.stringify({
+        lat,
+        lon,
+        name,
+      })}' value="${name},${state},${country}"></option>`;
+    }
+  }
+   console.log(value)
   console.log(options)
   document.querySelector("#cities").innerHTML = options;
 };
