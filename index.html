@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <script src="./particle.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Weather App</title>
-</head>
-<body>
+  </head>
+  <body>
     <main class="container">
-        <input type="search" name="search" id="search" placeholder="Search cities" autocomplete="off"/>
-        <datalist id="cities"> </datalist>
-        
-    <article id="current-forecast"> 
+      <input
+        type="search"
+        name="search"
+        list="cities"
+        id="search"
+        placeholder="Search cities"
+        autocomplete="off"
+      />
+      <datalist id="cities"></datalist>
+
+      <article id="current-forecast">
         <h1 class="city">City name</h1>
         <p class="temp">Temp</p>
         <p class="description">Description</p>
-        <p class="highlowtemp">H L </p>
-    </article>
-    <article id="Hourly-forecast"> 
-            <h1>Hourly forecast</h1>
+        <p class="highlowtemp">H L</p>
+      </article>
+      <article id="Hourly-forecast">
+        <h1>Hourly forecast</h1>
         <section class="hourly-container"></section>
-     </article>
-        <article id="five-day-forecast">
-            <h1>5 day forecast</h1>
-            <section class="five-day-forecast-container">
-                <article class="day-wise-forecast">
-                    <h3 class="day">Today</h3>
-                   <img class="icon" src="" alt="">
-                    <p class="min-temp">Low</p>
-                    <p class="max-temp">High</p>
-                </article>
-                <article class="day-wise-forecast">
-                    <h3>Tomorrow</h3>
-                    <img src="" alt="">
-                    <p class="min-temp">Low</p>
-                    <p class="max-temp">High</p>
-                </article>
-            </section>
-        </article>
-        <article id="feels-like">
-            <h1>Feels like</h1>
-            <p class="feels-liketemp">temp</p>
-        </article>
-        <article id="Humidity">
-            <h1>Humidity</h1>
-            <p class="Humidityvalue">Value</p>
-        </article>
+      </article>
+      <article id="five-day-forecast">
+        <h1>5 day forecast</h1>
+        <section class="five-day-forecast-container">
+          <article class="day-wise-forecast">
+            <h3 class="day">Today</h3>
+            <img class="icon" src="" alt="" />
+            <p class="min-temp">Low</p>
+            <p class="max-temp">High</p>
+          </article>
+          <article class="day-wise-forecast">
+            <h3>Tomorrow</h3>
+            <img src="" alt="" />
+            <p class="min-temp">Low</p>
+            <p class="max-temp">High</p>
+          </article>
+        </section>
+      </article>
+      <article id="feels-like">
+        <h1>Feels like</h1>
+        <p class="feels-liketemp">temp</p>
+      </article>
+      <article id="Humidity">
+        <h1>Humidity</h1>
+        <p class="Humidityvalue">Value</p>
+      </article>
     </main>
-<script src="./main.js"></script>
-</body>
+    <div id="particles-js"></div>
+    <script>
+      particlesJS.load("particles-js", "./p.json", function () {
+        console.log("callback - particles.js config loaded");
+      });
+    </script>
+
+    <script src="./main.js"></script>
+  </body>
 </html>

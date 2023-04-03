@@ -1,11 +1,18 @@
+
+
 const APIKEY = "31a6db7ce0091bfd0c77b3e1e3fa15a3";
 
 const DAYS_OF_THE_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const getCities=async(searchText)=>{
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&appid=${APIKEY}`)
-    return response.json();
-}
+let selectedCityText;
+let selectedCity;
+
+const getCities = async (searchText) => {
+  const response = await fetch(
+    `http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=${APIKEY}`
+  );
+  return response.json();
+};
 
 const getcurrentweather = async () => {
   const city = "DELHI";
@@ -106,9 +113,10 @@ const loadHourlyforecast = (
   hourlyforecast
 ) => {
   console.log(hourlyforecast);
-  const formattedTime = Intl.DateTimeFormat("en",{
-    hour12:true, hour:"numeric"
-  })
+  const formattedTime = Intl.DateTimeFormat("en", {
+    hour12: true,
+    hour: "numeric",
+  });
   let dataFor12hours = hourlyforecast.slice(2, 14);
   const hourlyContainer = document.querySelector(".hourly-container");
   let innerHTMLString = `<article>
@@ -138,32 +146,47 @@ const loadHumidity = ({ main: { humidity } }) => {
   humidityelement.querySelector(".Humidityvalue").textContent = `${humidity} %`;
 };
 
-function debounce(func){
-    let timer;
-    return (...args)=>{
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args)
-        }, 500);
-    }
+function debounce(func) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, 500);
+  };
 }
 
-const onSearchChange = async(event)=>{
-let {value} = event.target;
-const listOfCities = await getCities(value);
-let options = "";
-for(let {lat , lon ,name ,state , country } of listOfCities){
-    options+=` <option value="${name},${state},${country}"></option>`
+const handleCitySelection=(event)=>{
+selectedCityText= event.target.value;
+let options = document.querySelectorAll("#cities > option");
+if(options?.length){
+  let selectedOption = Array.from(options)
 }
-document.querySelector("#cities").innerHTML = options;
 }
 
-const debounceSearch = debounce((event)=>onSearchChange(event))
+const onSearchChange = async (event) => {
+  let { value } = event.target;
+   console.log(value)
+  const listOfCities = await getCities(value);
+  console.log(listOfCities);
+  let options = "";
+  for (let { lat, lon, name, state, country } of listOfCities) {
+    options += ` <option data-city-details='${JSON.stringify({
+      lat,
+      lon,
+      name,
+    })}' value="${name},${state},${country}"></option>`;
+  }
+  console.log(options)
+  document.querySelector("#cities").innerHTML = options;
+};
+
+const debounceSearch = debounce((event) => onSearchChange(event));
 document.addEventListener("DOMContentLoaded", async () => {
+  const searchInput = document.querySelector("#search");
+  searchInput.addEventListener("input", debounceSearch);
+  searchInput.addEventListener("change",handleCitySelection)
 
-   const searchInput = document.querySelector("#search");
-   searchInput.addEventListener("input",debounceSearch)
-   
   const currentweather = await getcurrentweather();
   loadCurrentforecast(currentweather);
   const hourlyforecast = await getHourlyforecast(currentweather);
@@ -172,3 +195,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadFeelsLike(currentweather);
   loadHumidity(currentweather);
 });
+
+

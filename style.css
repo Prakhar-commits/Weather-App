@@ -1,7 +1,9 @@
 /*idea : Change the background as the forecast changes*/
 
-*, ::after,::before{
+*{
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 :root{
 --spacing-regular: 16px;
@@ -13,14 +15,11 @@
 --font-semibold:600;
 }
 body{
-    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     width: 400px;
     margin: auto;
 }
- h1,h2{
-    margin: 0px;
- }
+
 
  p{
     margin: var(--spacing-regular);
@@ -140,4 +139,13 @@ font-weight: var(--font-semibold);
 #Humidity{
     grid-area: humidity;
     text-align: center;
+}
+
+#particles-js{
+position: fixed;
+inset: 0;
+z-index: -1;
+width: 100%;
+height: 100%;
+background-color:lightcyan;
 }
