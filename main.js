@@ -15,7 +15,7 @@ const getCities = async (searchText) => {
 const getcurrentweather = async ({ lat, lon, name: city }) => {
   const url =
     lat && lon
-      ? `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=meteric`
+      ? `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=metric`
       : `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`;
   const response = await fetch(url);
   return response.json();
