@@ -1,5 +1,3 @@
-
-
 const APIKEY = "31a6db7ce0091bfd0c77b3e1e3fa15a3";
 
 const DAYS_OF_THE_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -14,14 +12,16 @@ const getCities = async (searchText) => {
   return response.json();
 };
 
-const getcurrentweather = async ({lat , lon , name: city}) => {
-  const url = lat && lon?`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=meteric`: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`
+const getcurrentweather = async ({ lat, lon, name: city }) => {
+  const url =
+    lat && lon
+      ? `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=meteric`
+      : `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`;
   const response = await fetch(url);
   return response.json();
 };
 
-const getHourlyforecast = async ({name: city}) => {
-  
+const getHourlyforecast = async ({ name: city }) => {
   const response = await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`
   );
@@ -154,52 +154,62 @@ function debounce(func) {
   };
 }
 
-const handleCitySelection=(event)=>{
-selectedCityText= event.target.value;
-let options = document.querySelectorAll("#cities > option");
-if(options?.length){
-  let selectedOption = Array.from(options).find(opt=>opt.value=== selectedCityText);
-  selectedCity = JSON.parse(selectedOption.getAttribute("data-city-details"));
-
-}
+const geolocation = ()=>{
+  navigator.geolocation.getCurrentPosition(({coords})=>{
+    const {latitude:lat, longitude:lon} = coords;
+    selectedCity = {lat ,lon};
+    loadData();
+  },error =>console.error(error))
 }
 
-const onSearchChange = async (event) => {
+const handleCitySelection = (event) => {
+  selectedCityText = event.target.value;
+  let options = document.querySelectorAll("#cities > option");
+  if (options?.length) {
+    let selectedOption = Array.from(options).find(
+      (opt) => opt.value === selectedCityText
+    );
+    selectedCity = JSON.parse(selectedOption.getAttribute("data-city-details"));
+    loadData();
+  }
+};
+
+const onSearchChange = async(event) => {
   let { value } = event.target;
-  if(!value){
-    let selectedCity = null;
+  if (!value) {
+    selectedCity = null;
     selectedCityText = "";
   }
-  if(value && (selectedCityText !== value)){ 
-   const listOfCities = await getCities(value);
-    console.log(listOfCities);
+  if (value && (selectedCityText !== value)) {
+    const listOfCities = await getCities(value);
     let options = "";
     for (let { lat, lon, name, state, country } of listOfCities) {
-      options += ` <option data-city-details='${JSON.stringify({
+      options += `<option data-city-details='${JSON.stringify({
         lat,
         lon,
         name,
       })}' value="${name},${state},${country}"></option>`;
     }
+    document.querySelector("#cities").innerHTML = options;
   }
-   console.log(value)
-  console.log(options)
-  document.querySelector("#cities").innerHTML = options;
+  
 };
 
 const debounceSearch = debounce((event) => onSearchChange(event));
+
 document.addEventListener("DOMContentLoaded", async () => {
   const searchInput = document.querySelector("#search");
   searchInput.addEventListener("input", debounceSearch);
-  searchInput.addEventListener("change",handleCitySelection)
+  searchInput.addEventListener("change", handleCitySelection);
+});
 
-  const currentweather = await getcurrentweather();
+
+const loadData=async()=>{
+  const currentweather = await getcurrentweather(selectedCity);
   loadCurrentforecast(currentweather);
   const hourlyforecast = await getHourlyforecast(currentweather);
   loadHourlyforecast(currentweather, hourlyforecast);
   loadFiveDayForecast(hourlyforecast);
   loadFeelsLike(currentweather);
   loadHumidity(currentweather);
-});
-
-
+}

@@ -116,7 +116,7 @@ font-weight: var(--font-semibold);
 }
 
 .five-day-forecast-container .day-wise-forecast .min-temp{
-    opacity: 60%;
+    opacity: 80%;
 }
 
 .five-day-forecast-container .day-wise-forecast .icon{
